@@ -1,24 +1,40 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="LIVRE")
 public class Livre {
 	@Id
-	int id;
+	private int id;
 	
 	@Column(name="TITRE",length=255,nullable=false)
-	String title;
+	private String title;
 	
 	@Column(name="AUTEUR",length=50,nullable=false)
-	String author;
+	private String author;
 	
+	
+	@ManyToMany
+	@JoinTable(
+			name="COMPO",
+			joinColumns= @JoinColumn(name="ID_LIV", referencedColumnName="ID"),
+			inverseJoinColumns= @JoinColumn(name="ID_EMP", referencedColumnName="ID")
+	)
+	private List<Emprunt> emprunts;
+	
+
 	public Livre(){
-		
+		emprunts = new ArrayList<Emprunt>();
 	}
 	
 	public String toString(){
@@ -47,5 +63,21 @@ public class Livre {
 
 	public void setAuthor(String auteur){
 		author = auteur;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public List<Emprunt> getEmprunts() {
+		return emprunts;
+	}
+
+	public void setEmprunts(List<Emprunt> emprunts) {
+		this.emprunts = emprunts;
 	}
 }
